@@ -1,10 +1,13 @@
-default: _explode_
+OBJECTS = lab2.o main.o
 
-_explode_: main.o
-	gcc -o _explode_ main.o lab1.c
+validate_sudoku: $(OBJECTS)
+	gcc -o $@ $(OBJECTS) 
 
-main.o: main.c lab1.c
-	gcc -c main.c lab1.c
+lab2.o:lab2.c
+	gcc -c lab2.c
+
+main.o: 
+	gcc -c main.c
 
 clean:
-	-rm -rf *.o _explode_
+	-rm *.o core validate_sudoku

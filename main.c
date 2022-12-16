@@ -1,31 +1,33 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "lab1.h"
+#include "lab2.h"
 
-/**********************************************
- *     DO NOT MODIFY THIS FILE IN ANY WAY!    *
- **********************************************/
 
-int main(int argc, char** argv)
-{
-    char* explodedString = NULL;
-    char* str = NULL;
-    int result = SUCCESS;
+
+int main(int argc, char *argv[]){
     
+    int** sudoku_board;
     if (argc < 2){
         fprintf(stderr,"SYNOPSIS: %s <file name>\n",argv[0]);
-        return FAILURE;
+        return 1;
     }
+
+    sudoku_board = read_board_from_file(argv[1]);
     
-    str = readString(argv[1]);
-    if (str != NULL){
-        explodedString = mysteryExplode(str);
+    if (sudoku_board == NULL){
+        fprintf(stderr,"No board available to validate. File %s is empty or unreadable.\n",argv[1]);
+        return 2;
     }
-    
-    printf("%s --> %s\n",str,explodedString);
-    
-    free(str);
-    free(explodedString);
-    
-    return SUCCESS;
+
+    if (is_board_valid()){
+        printf("The board is valid.\n");
+    } else {
+        printf("The board is not valid.\n");
+    }
+    printf("freeing board\n");
+    for(int row = 0; row < ROW_SIZE; row++){
+        free(sudoku_board[row]);
+    }
+    free(sudoku_board);
+    return 0;
 }
